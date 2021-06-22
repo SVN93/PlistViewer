@@ -36,7 +36,7 @@ struct Model: Hashable {
 	typealias Data = [Field]
 
 	let scheme: Scheme
-	let data: Data
+	var data: Data
 
 }
 

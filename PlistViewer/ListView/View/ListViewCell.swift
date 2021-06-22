@@ -50,11 +50,16 @@ final class ListViewCell: UITableViewCell {
 		self.stackView = stackView
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		contentView.addSubview(stackView)
+		deleteButton.addTarget(self, action: #selector(didTapDeleteButton(_:)), for: .touchUpInside)
 		setupLayout()
 	}
 
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+
+	@objc private func didTapDeleteButton(_ deleteButton: UIButton) {
+		viewModel.map { $0.deleteAction?($0) }
 	}
 
 	private func setupLayout() {
