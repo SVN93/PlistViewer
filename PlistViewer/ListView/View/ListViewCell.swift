@@ -9,18 +9,7 @@ import UIKit
 
 final class ListViewCell: UITableViewCell {
 
-	private let nameView = TitledValueView()
-	private let lastNameView: TitledValueView = {
-		let view = TitledValueView()
-		view.isHidden = true
-		return view
-	}()
-	private let birthdateView = TitledValueView()
-	private let childrenCountView: TitledValueView = {
-		let view = TitledValueView()
-		view.isHidden = true
-		return view
-	}()
+	private var titledValueViews = [TitledValueView(), TitledValueView(), TitledValueView(), TitledValueView()] // little optimization
 	private let deleteButton: UIButton = {
 		let deleteButton = UIButton(type: .custom)
 		deleteButton.setTitle("Удалить", for: .normal)
@@ -29,23 +18,29 @@ final class ListViewCell: UITableViewCell {
 		return deleteButton
 	}()
 	private let stackView: UIStackView
-
 	var viewModel: ViewModel? {
 		didSet {
 			if oldValue != viewModel {
-				nameView.viewModel = viewModel?.name
-				lastNameView.isHidden = viewModel?.lastName == nil ? true : false
-				viewModel?.lastName.map { lastNameView.viewModel = $0 }
-				lastNameView.viewModel = viewModel?.lastName
-				birthdateView.viewModel = viewModel?.birthdate
-				lastNameView.isHidden = viewModel?.childrenCount == nil ? true : false
-				viewModel?.childrenCount.map { childrenCountView.viewModel = $0 }
+				guard let viewModels = viewModel?.viewModels else {
+					assertionFailure("No viewModels for cell: \(self)")
+					return titledValueViews.forEach { $0.isHidden = true }
+				}
+				addViewsIfNeeded(for: viewModels)
+				for (idx, titledValueView) in titledValueViews.enumerated() {
+					if viewModels.indices.contains(idx) {
+						titledValueView.viewModel = viewModels[idx]
+						titledValueView.isHidden = false
+					} else {
+						titledValueView.isHidden = true
+						titledValueView.viewModel = nil
+					}
+				}
 			}
 		}
 	}
 
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-		let stackView = UIStackView(arrangedSubviews: [nameView, lastNameView, birthdateView, childrenCountView, deleteButton])
+		let stackView = UIStackView(arrangedSubviews: titledValueViews + [deleteButton])
 		stackView.axis = .vertical
 		self.stackView = stackView
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -56,6 +51,19 @@ final class ListViewCell: UITableViewCell {
 
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+
+	private func addViewsIfNeeded(for viewModels: [TitledValueView.ViewModel]) {
+		let viewsCount = titledValueViews.count
+		let missing = viewModels.count - viewsCount
+		if missing > 0 {
+			for idx in 0..<missing {
+				let titledValueView = TitledValueView()
+				titledValueViews.append(titledValueView)
+				let stackIndex = viewsCount + idx
+				stackView.insertArrangedSubview(titledValueView, at: stackIndex)
+			}
+		}
 	}
 
 	@objc private func didTapDeleteButton(_ deleteButton: UIButton) {

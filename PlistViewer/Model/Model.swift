@@ -5,11 +5,11 @@
 //  Created by Vladislav.S on 19.06.2021.
 //
 
-import Foundation
+import Foundation.NSError
 
 struct Model: Hashable {
 
-	enum Identifier: String, Codable, Hashable {
+	enum Identifier: String, Codable, Hashable, CaseIterable {
 		case name, lastName, birthdate, childrenCount
 	}
 
@@ -72,6 +72,32 @@ extension Model {
 
 }
 
+extension Model.Field {
+
+	func sorted(by scheme: Model.Scheme) -> [(Model.Identifier, String)] {
+		let schemeIds = scheme.map { $0.identifier }
+		return sorted(by: { schemeIds.firstIndex(of: $0.key) < schemeIds.firstIndex(of: $1.key) })
+	}
+
+}
+
+extension Optional: Comparable where Wrapped == Array<Model.Identifier>.Index {
+
+	public static func < (lhs: Optional<Wrapped>, rhs: Optional<Wrapped>) -> Bool {
+		switch (lhs, rhs) {
+		case let (.some(lhsValue), .some(rhsValue)):
+			return lhsValue < rhsValue
+		case (.some, .none): // Order values before nils
+			return false
+		case (.none, .some):
+			return true
+		case (.none, .none): // All none are equivalent, so none is before any other
+			return false
+		}
+	}
+
+}
+
 extension Array where Element == Model.FieldConfiguration {
 
 	func config(for identifier: Model.Identifier) -> Element? {
@@ -90,7 +116,7 @@ extension Model: Decodable {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		scheme = try container.decode(Scheme.self, forKey: .scheme)
 		let dictArray = try container.decode([[String: String]].self, forKey: .data)
-		data = try dictArray.lazy.map({ dict in
+		data = try dictArray.lazy.map { dict in
 			let sequence = try dict.lazy.compactMap { (key: String, value: String) -> (Identifier, String)? in
 				guard !value.isEmpty else { return nil }
 				guard let id = Identifier(rawValue: key) else {
@@ -103,7 +129,7 @@ extension Model: Decodable {
 				return (id, value)
 			}
 			return Dictionary(uniqueKeysWithValues: sequence)
-		})
+		}
 	}
 
 }

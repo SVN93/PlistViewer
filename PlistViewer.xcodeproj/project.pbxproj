@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		846B0CDB26834982006FB3A3 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846B0CDA26834982006FB3A3 /* DetailView.swift */; };
+		846B0CDD2683649E006FB3A3 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846B0CDC2683649E006FB3A3 /* Globals.swift */; };
 		8474743C267E8CD100C920B1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8474743B267E8CD100C920B1 /* AppDelegate.swift */; };
 		8474743E267E8CD100C920B1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8474743D267E8CD100C920B1 /* SceneDelegate.swift */; };
 		84747442267E8CD200C920B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84747441267E8CD200C920B1 /* Assets.xcassets */; };
@@ -19,9 +21,14 @@
 		847474BE267E97DC00C920B1 /* ListViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847474BD267E97DC00C920B1 /* ListViewBuilder.swift */; };
 		847474C0267E987500C920B1 /* Input.plist in Resources */ = {isa = PBXBuildFile; fileRef = 847474BF267E987500C920B1 /* Input.plist */; };
 		847474C3267E9B1B00C920B1 /* PlistService in Frameworks */ = {isa = PBXBuildFile; productRef = 847474C2267E9B1B00C920B1 /* PlistService */; };
+		848182632682A01900DAE395 /* DetailValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848182622682A01900DAE395 /* DetailValueView.swift */; };
 		84AFE4802682536000DB2C03 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFE47F2682536000DB2C03 /* ListViewCell.swift */; };
 		84AFE482268254A300DB2C03 /* ListViewCell.ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFE481268254A300DB2C03 /* ListViewCell.ViewModel.swift */; };
 		84AFE4842682577700DB2C03 /* TitledValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFE4832682577700DB2C03 /* TitledValueView.swift */; };
+		84AFE4872682862600DB2C03 /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFE4862682862600DB2C03 /* FlowCoordinator.swift */; };
+		84AFE48C2682873D00DB2C03 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFE48B2682873D00DB2C03 /* DetailViewController.swift */; };
+		84AFE490268288E500DB2C03 /* DetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFE48F268288E500DB2C03 /* DetailPresenter.swift */; };
+		84AFE4922682938C00DB2C03 /* DetailViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFE4912682938C00DB2C03 /* DetailViewBuilder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +49,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		846B0CDA26834982006FB3A3 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		846B0CDC2683649E006FB3A3 /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		84747438267E8CD100C920B1 /* PlistViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlistViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8474743B267E8CD100C920B1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8474743D267E8CD100C920B1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -60,9 +69,14 @@
 		847474B8267E937900C920B1 /* ListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPresenter.swift; sourceTree = "<group>"; };
 		847474BD267E97DC00C920B1 /* ListViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewBuilder.swift; sourceTree = "<group>"; };
 		847474BF267E987500C920B1 /* Input.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Input.plist; sourceTree = "<group>"; };
+		848182622682A01900DAE395 /* DetailValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailValueView.swift; sourceTree = "<group>"; };
 		84AFE47F2682536000DB2C03 /* ListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
 		84AFE481268254A300DB2C03 /* ListViewCell.ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewCell.ViewModel.swift; sourceTree = "<group>"; };
 		84AFE4832682577700DB2C03 /* TitledValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitledValueView.swift; sourceTree = "<group>"; };
+		84AFE4862682862600DB2C03 /* FlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinator.swift; sourceTree = "<group>"; };
+		84AFE48B2682873D00DB2C03 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		84AFE48F268288E500DB2C03 /* DetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresenter.swift; sourceTree = "<group>"; };
+		84AFE4912682938C00DB2C03 /* DetailViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewBuilder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,9 +130,12 @@
 		8474743A267E8CD100C920B1 /* PlistViewer */ = {
 			isa = PBXGroup;
 			children = (
+				84AFE4862682862600DB2C03 /* FlowCoordinator.swift */,
+				84AFE485268285B100DB2C03 /* DetailVIew */,
 				847474B4267E932700C920B1 /* ListView */,
 				847474B1267E92DF00C920B1 /* Model */,
 				847474B0267E929D00C920B1 /* App */,
+				846B0CDC2683649E006FB3A3 /* Globals.swift */,
 				84747441267E8CD200C920B1 /* Assets.xcassets */,
 				84747446267E8CD200C920B1 /* LaunchScreen.storyboard */,
 				84747449267E8CD200C920B1 /* Info.plist */,
@@ -204,6 +221,42 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		84AFE485268285B100DB2C03 /* DetailVIew */ = {
+			isa = PBXGroup;
+			children = (
+				84AFE48E268288D300DB2C03 /* Builder */,
+				84AFE48D268288CB00DB2C03 /* Presenter */,
+				84AFE48A2682873D00DB2C03 /* View */,
+			);
+			path = DetailVIew;
+			sourceTree = "<group>";
+		};
+		84AFE48A2682873D00DB2C03 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				84AFE48B2682873D00DB2C03 /* DetailViewController.swift */,
+				846B0CDA26834982006FB3A3 /* DetailView.swift */,
+				848182622682A01900DAE395 /* DetailValueView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		84AFE48D268288CB00DB2C03 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				84AFE48F268288E500DB2C03 /* DetailPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		84AFE48E268288D300DB2C03 /* Builder */ = {
+			isa = PBXGroup;
+			children = (
+				84AFE4912682938C00DB2C03 /* DetailViewBuilder.swift */,
+			);
+			path = Builder;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -340,7 +393,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				84AFE482268254A300DB2C03 /* ListViewCell.ViewModel.swift in Sources */,
+				848182632682A01900DAE395 /* DetailValueView.swift in Sources */,
 				847474BE267E97DC00C920B1 /* ListViewBuilder.swift in Sources */,
+				84AFE48C2682873D00DB2C03 /* DetailViewController.swift in Sources */,
+				84AFE4872682862600DB2C03 /* FlowCoordinator.swift in Sources */,
 				847474B9267E937900C920B1 /* ListPresenter.swift in Sources */,
 				847474B3267E930200C920B1 /* Model.swift in Sources */,
 				8474743C267E8CD100C920B1 /* AppDelegate.swift in Sources */,
@@ -348,6 +404,10 @@
 				8474743E267E8CD100C920B1 /* SceneDelegate.swift in Sources */,
 				84AFE4802682536000DB2C03 /* ListViewCell.swift in Sources */,
 				84AFE4842682577700DB2C03 /* TitledValueView.swift in Sources */,
+				846B0CDD2683649E006FB3A3 /* Globals.swift in Sources */,
+				84AFE490268288E500DB2C03 /* DetailPresenter.swift in Sources */,
+				846B0CDB26834982006FB3A3 /* DetailView.swift in Sources */,
+				84AFE4922682938C00DB2C03 /* DetailViewBuilder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

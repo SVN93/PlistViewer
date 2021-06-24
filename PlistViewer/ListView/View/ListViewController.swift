@@ -65,6 +65,10 @@ final class ListViewController: UITableViewController {
 
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		lastSelectedIndexPath = indexPath
+		model.map { [unowned output] model in
+			let field = model.data[indexPath.row]
+			output.showDetail(for: field)
+		}
 	}
 
 }
@@ -76,7 +80,6 @@ extension ListViewController: ListPresenterOutput {
 			self.model = model
 			tableView.reloadData()
 		}
-
 	}
 
 	func update(model: Model, deletedRow: Int) {
@@ -93,4 +96,5 @@ extension ListViewController: ListPresenterOutput {
 protocol ListViewControllerOutput: AnyObject {
 	func readPlist()
 	func delete(field: Model.Field)
+	func showDetail(for field: Model.Field)
 }

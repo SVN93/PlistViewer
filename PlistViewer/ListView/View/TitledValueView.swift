@@ -46,7 +46,7 @@ final class TitledValueView: UIView {
 	}
 
 	private func setupLayout() {
-		[titleLabel, valueLabel].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+		[titleLabel, valueLabel].setTranslatesAutoresizingMaskIntoConstraints()
 		let spacing: CGFloat = 10
 		NSLayoutConstraint.activate([
 			titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),

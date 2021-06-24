@@ -7,21 +7,44 @@
 
 import PlistService
 
-final class ListPresenter {
+final class ListPresenter: ListFlow {
 
 	private let fileName: String
 	private let plistService: PlistService
 	private var lastUsedModel: Model?
 	weak var output: ListPresenterOutput?
+	var showDetail: ((_ field: Model.Field, _ model: Model) -> Void)?
 
 	init(fileName: String, plistService: PlistService) {
 		self.fileName = fileName
 		self.plistService = plistService
 	}
 
+	func update(model: Model) {
+		self.lastUsedModel = model
+		output?.show(model: model)
+	}
+
+}
+
+protocol ListFlow: AnyObject {
+	var showDetail: ((_ field: Model.Field, _ model: Model) -> Void)? { get set }
+	func update(model: Model)
 }
 
 extension ListPresenter: ListViewControllerOutput {
+
+	func readPlist() {
+		do {
+			let model: Model = try plistService.readValue(from: fileName)
+			try model.validateByScheme()
+			lastUsedModel = model
+			output?.show(model: model)
+		} catch {
+			print(error)
+			output?.show(error: error)
+		}
+	}
 
 	func delete(field: Model.Field) {
 		guard
@@ -33,15 +56,9 @@ extension ListPresenter: ListViewControllerOutput {
 		output?.update(model: updatedModel, deletedRow: idx)
 	}
 
-	func readPlist() {
-		do {
-			let model: Model = try plistService.readValue(from: fileName)
-			try model.validateByScheme()
-			lastUsedModel = model
-			output?.show(model: model)
-		} catch {
-			print(error)
-			output?.show(error: error)
+	func showDetail(for field: Model.Field) {
+		lastUsedModel.map { model in
+			showDetail?(field, model)
 		}
 	}
 

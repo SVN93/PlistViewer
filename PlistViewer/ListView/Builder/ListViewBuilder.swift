@@ -5,16 +5,28 @@
 //  Created by Vladislav.S on 20.06.2021.
 //
 
-import UIKit
+import UIKit.UIViewController
 import PlistService
 
-enum ListViewBuilder {
+final class ListViewBuilder: ListViewBuilderProtocol {
 
-	static func buildStack(plistService: PlistService = PlistReaderService(bundlePlistName: "Input")) -> UIViewController {
-		let presenter = ListPresenter(fileName: "Input", plistService: plistService)
-		let listViewController = ListViewController(output: presenter)
-		presenter.output = listViewController
-		return listViewController
+	private let fileName: String
+	private let plistService: PlistService
+
+	init(fileName: String = "Input", plistService: PlistService = PlistReaderService(bundlePlistName: "Input")) {
+		self.fileName = fileName
+		self.plistService = plistService
 	}
 
+	func buildStack() -> (listFlow: ListFlow, listView: UIViewController) {
+		let presenter = ListPresenter(fileName: fileName, plistService: plistService)
+		let listViewController = ListViewController(output: presenter)
+		presenter.output = listViewController
+		return (presenter, listViewController)
+	}
+
+}
+
+protocol ListViewBuilderProtocol {
+	func buildStack() -> (listFlow: ListFlow, listView: UIViewController)
 }
