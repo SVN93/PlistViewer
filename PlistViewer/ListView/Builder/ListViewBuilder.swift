@@ -10,16 +10,10 @@ import PlistService
 
 final class ListViewBuilder: ListViewBuilderProtocol {
 
-	private let fileName: String
-	private let plistService: PlistService
+	init() {}
 
-	init(fileName: String = "Input", plistService: PlistService = PlistReaderService(bundlePlistName: "Input")) {
-		self.fileName = fileName
-		self.plistService = plistService
-	}
-
-	func buildStack() -> (listFlow: ListFlow, listView: UIViewController) {
-		let presenter = ListPresenter(fileName: fileName, plistService: plistService)
+	func buildStack(modelProvider: @escaping ListPresenter.ModelProvider) -> (listFlow: ListFlow, listView: UIViewController) {
+		let presenter = ListPresenter(modelProvider)
 		let listViewController = ListViewController(output: presenter)
 		presenter.output = listViewController
 		return (presenter, listViewController)
@@ -28,5 +22,7 @@ final class ListViewBuilder: ListViewBuilderProtocol {
 }
 
 protocol ListViewBuilderProtocol {
-	func buildStack() -> (listFlow: ListFlow, listView: UIViewController)
+	func buildStack(
+		modelProvider: @escaping ListPresenter.ModelProvider
+	) -> (listFlow: ListFlow, listView: UIViewController)
 }

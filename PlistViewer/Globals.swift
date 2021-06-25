@@ -14,3 +14,18 @@ extension Sequence where Element: UIView {
 	}
 
 }
+
+extension Result {
+
+	@inlinable
+	@discardableResult
+	func mapIfSuccess<NewSuccess>(_ transform: (Success) throws -> NewSuccess) rethrows -> NewSuccess? {
+		switch self {
+		case .success(let success):
+			return try transform(success)
+		case .failure:
+			return nil
+		}
+	}
+
+}

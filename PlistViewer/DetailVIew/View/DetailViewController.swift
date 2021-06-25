@@ -15,7 +15,7 @@ final class DetailViewController: UIViewController {
 	private var model: Model
 	private var viewModels: [DetailValueView.ViewModel]
 
-	init(output: DetailViewControllerOutput, field: Model.Field, model: Model) {
+	init(output: DetailViewControllerOutput, field: Model.Field, model: Model, title: String = "Detail") {
 		self.output = output
 		self.field = field
 		self.model = model
@@ -23,7 +23,7 @@ final class DetailViewController: UIViewController {
 			.init(title: model.scheme.title(for: id), value: value)
 		}
 		super.init(nibName: nil, bundle: nil)
-		title = "Detail"
+		self.title = title
 	}
 
 	required init?(coder: NSCoder) {
