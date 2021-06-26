@@ -41,6 +41,7 @@ final class DetailValueView: UIView {
 		[titleLabel, textView].forEach(addSubview(_:))
 		updateView(with: self.viewModel)
 		setupLayout()
+		textView.delegate = self
 	}
 
 	required init?(coder: NSCoder) {
@@ -55,7 +56,7 @@ final class DetailValueView: UIView {
 			titleLabel.textColor = .black
 			textView.textColor = .black
 			textView.layer.borderColor = UIColor.black.cgColor
-		case .error:
+		case .wrong:
 			titleLabel.textColor = .red
 			textView.textColor = .red
 			textView.layer.borderColor = UIColor.red.cgColor
@@ -78,15 +79,25 @@ final class DetailValueView: UIView {
 
 }
 
+extension DetailValueView: UITextViewDelegate {
+
+	func textViewDidChange(_ textView: UITextView) {
+		viewModel.value = textView.text
+	}
+
+}
+
 extension DetailValueView {
 
 	enum Mode: Hashable {
-		case normal, error
+		case normal, wrong
 	}
 
-	struct ViewModel: Hashable {
-		let title: String?
-		var value: String?
+	struct ViewModel: Equatable {
+		let id: Model.Identifier
+		let config: Model.FieldConfiguration
+		let title: String
+		var value: String
 		var mode: Mode = .normal
 	}
 

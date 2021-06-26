@@ -53,7 +53,7 @@ extension String {
 		case .date:
 			let range = NSMakeRange(0, count)
 			let types: NSTextCheckingResult.CheckingType = [.date]
-			guard let dateDetector = try? NSDataDetector(types: types.rawValue) else { return false }
+			let dateDetector = try NSDataDetector(types: types.rawValue)
 			let matches = dateDetector.matches(in: self, options: [], range: range)
 			guard !matches.isEmpty else { return false }
 			return matches.contains(where: { NSEqualRanges($0.range, range) })
