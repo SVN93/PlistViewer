@@ -50,6 +50,16 @@ final class DetailValueView: UIView {
 	private func updateView(with viewModel: ViewModel) {
 		titleLabel.text = viewModel.title
 		textView.text = viewModel.value
+		switch viewModel.mode {
+		case .normal:
+			titleLabel.textColor = .black
+			textView.textColor = .black
+			textView.layer.borderColor = UIColor.black.cgColor
+		case .error:
+			titleLabel.textColor = .red
+			textView.textColor = .red
+			textView.layer.borderColor = UIColor.red.cgColor
+		}
 	}
 
 	private func setupLayout() {
@@ -70,9 +80,14 @@ final class DetailValueView: UIView {
 
 extension DetailValueView {
 
+	enum Mode: Hashable {
+		case normal, error
+	}
+
 	struct ViewModel: Hashable {
 		let title: String?
 		var value: String?
+		var mode: Mode = .normal
 	}
 
 }

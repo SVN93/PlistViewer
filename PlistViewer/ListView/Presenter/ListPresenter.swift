@@ -19,11 +19,27 @@ final class ListPresenter: ListFlow {
 	init(_ modelProvider: @escaping ModelProvider) {
 		self.modelProvider = modelProvider
 	}
+
+	func update(field: Model.Field, for model: Model) {
+		self.model = .success(model)
+		do {
+			guard let rowToUpdate = model.data.firstIndex(of: field) else {
+				throw ListPresenterError.internalInconsistency
+			}
+			self.model = .success(model)
+			output?.update(model: model, updateRow: rowToUpdate)
+		} catch {
+			self.model = .failure(error)
+			output?.show(error: error)
+		}
+	}
+
 }
 
 protocol ListFlow: AnyObject {
 	var saveModel: ((_ newModel: Model) throws -> Void)? { get set }
 	var showDetail: ((_ field: Model.Field, _ model: Model) -> Void)? { get set }
+	func update(field: Model.Field, for model: Model)
 }
 
 extension ListPresenter: ListViewControllerOutput {
@@ -68,11 +84,12 @@ extension ListPresenter: ListViewControllerOutput {
 
 protocol ListPresenterOutput: AnyObject {
 	func update(model: Model, deletedRow: Int?)
+	func update(model: Model, updateRow: Int)
 	func show(error: Error)
 }
 
 extension ListPresenter {
-	enum ListPresenterError: Swift.Error {
+	enum ListPresenterError: Error {
 		case internalInconsistency
 	}
 }

@@ -9,7 +9,7 @@ final class DetailPresenter: DetailFlow {
 
 	private var field: Model.Field
 	private var model: Model
-	var saveAction: ((_ field: Model.Field) -> Void)?
+	var validateAndSaveModel: ((_ field: Model.Field, _ newModel: Model) throws -> Void)?
 	weak var output: DetailPresenterOutput?
 
 	init(field: Model.Field, model: Model) {
@@ -20,7 +20,7 @@ final class DetailPresenter: DetailFlow {
 }
 
 protocol DetailFlow: AnyObject {
-	var saveAction: ((_ field: Model.Field) -> Void)? { get set }
+	var validateAndSaveModel: ((_ field: Model.Field, _ newModel: Model) throws -> Void)? { get set }
 }
 
 extension DetailPresenter: DetailViewControllerOutput {

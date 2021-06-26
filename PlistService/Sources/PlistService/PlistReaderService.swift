@@ -57,8 +57,12 @@ public final class PlistReaderService {
 		)
 	}
 
+	private func constructFileURL(for fileName: String) -> URL {
+		supportedDirectories[0].appendingPathComponent(fileName)
+	}
+
 	private func plistUrl(for fileName: String) throws -> URL {
-		let fileUrl = supportedDirectories[0].appendingPathComponent(fileName)
+		let fileUrl = constructFileURL(for: fileName)
 		guard !fileManager.fileExists(atPath: fileUrl.path) else { return fileUrl }
 		guard let bundlePlistUrl = plistUrlProvider(bundlePlistName, "plist") else {
 			throw PlistServiceError.fileNotFound(fileName: bundlePlistName.appending(".plist"))
@@ -78,13 +82,13 @@ extension PlistReaderService: PlistService {
 	}
 
 	public func write<Value: Encodable>(value: Value, to fileName: String) throws {
-		let plistUrl = try plistUrl(for: fileName)
+		let fileUrl = constructFileURL(for: fileName)
 		let data = try encoder.encode(value)
-		if fileManager.fileExists(atPath: plistUrl.path) {
-			try dataWriter(data, plistUrl)
+		if fileManager.fileExists(atPath: fileUrl.path) {
+			try dataWriter(data, fileUrl)
 		} else {
-			guard fileManager.createFile(atPath: plistUrl.path, contents: data) else {
-				throw PlistServiceError.cannotCreateFile(atPath: plistUrl.path)
+			guard fileManager.createFile(atPath: fileUrl.path, contents: data) else {
+				throw PlistServiceError.cannotCreateFile(atPath: fileUrl.path)
 			}
 		}
 	}

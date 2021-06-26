@@ -115,18 +115,17 @@ final class PlistReaderServiceTests: XCTestCase {
 		fileManagerSpy.isFileExists = false
 		do {
 			// Arrange
-			guard let bundlePlistURL = URL(string: self.bundlePlistName) else {
-				return XCTFail("Cannot create url from string: \(self.bundlePlistName)")
-			}
+			let suppoertedDirs = fileManagerSpy.urls(for: .documentDirectory, in: .userDomainMask)
+			let fileUrl = suppoertedDirs[0].appendingPathComponent(testFileName)
 			let value = TestValue(value: "test value")
 			let encoder = PropertyListEncoder()
 			let encodedValue = try encoder.encode(value)
-			let fileInfo = FileManagerSpy.FileInfo(filePath: bundlePlistURL.path, content: encodedValue)
+			let fileInfo = FileManagerSpy.FileInfo(filePath: fileUrl.path, content: encodedValue)
 			var dataWriterCalled = false
 			let plistReaderService = PlistReaderService(
 				fileManager: fileManagerSpy,
 				plistUrlProvider: { _, _ in
-					bundlePlistURL
+					fileUrl
 				},
 				dataWriter: { _, _ in
 					dataWriterCalled = true

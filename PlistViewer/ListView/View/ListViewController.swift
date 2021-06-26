@@ -86,6 +86,12 @@ extension ListViewController: ListPresenterOutput {
 		}
 	}
 
+	func update(model: Model, updateRow: Int) {
+		viewModel = .success(model)
+		tableView.reloadRows(at: [.init(row: updateRow, section: 0)], with: .automatic)
+	}
+
+
 	func show(error: Error) {
 		viewModel = .failure(error)
 		let alertViewController = UIAlertController(title: "Error ocurred", message: error.localizedDescription, preferredStyle: .alert)
