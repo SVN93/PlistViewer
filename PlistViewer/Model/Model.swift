@@ -5,12 +5,16 @@
 //  Created by Vladislav.S on 19.06.2021.
 //
 
-import Foundation.NSError
+import Foundation
 
 struct Model: Hashable {
 
-	enum Identifier: String, Codable, Hashable, CaseIterable {
+	enum Identifier: String, Codable, Hashable {
 		case name, lastName, birthdate, childrenCount
+	}
+
+	enum ValueType: String, Codable, Hashable {
+		case string, date, number
 	}
 
 	struct FieldConfiguration: Codable, Hashable {
@@ -22,7 +26,7 @@ struct Model: Hashable {
 		}
 
 		let identifier: Identifier
-		let type: String
+		let type: ValueType
 		let title: String
 		let isRequired: Bool
 	}
@@ -40,31 +44,44 @@ struct Model: Hashable {
 
 }
 
-extension Model {
+extension String {
 
-	enum Error: LocalizedError {
-		case invalidField
-
-		var errorDescription: String? {
-			switch self {
-			case .invalidField:
-				return "Invalid field!"
-			}
+	func validate(with type: Model.ValueType) throws -> Bool {
+		switch type {
+		case .string:
+			return true
+		case .date:
+			let range = NSMakeRange(0, count)
+			let types: NSTextCheckingResult.CheckingType = [.date]
+			guard let dateDetector = try? NSDataDetector(types: types.rawValue) else { return false }
+			let matches = dateDetector.matches(in: self, options: [], range: range)
+			guard !matches.isEmpty else { return false }
+			return matches.contains(where: { NSEqualRanges($0.range, range) })
+		case .number:
+			return !self.isEmpty && self.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
 		}
 	}
-
 }
 
 extension Model {
 
+	enum ValidationError: Swift.Error {
+		case valueShouldntBeEmpty(Identifier)
+		case wrongType(Identifier)
+	}
+
 	func validateByScheme() throws {
 		for field in data {
 			for (id, value) in field {
-				if let config = scheme.config(for: id), config.isRequired { // Identifier cannot be mapped wrong.
+				guard let config = scheme.config(for: id) else { continue } // Identifier cannot be mapped wrong.
+				if config.isRequired {
 					guard !value.isEmpty else {
-						throw Error.invalidField
+						throw ValidationError.valueShouldntBeEmpty(id)
 					}
-					// TODO: Check type.
+				}
+
+				guard try value.validate(with: config.type) else {
+					throw ValidationError.wrongType(id)
 				}
 			}
 		}
