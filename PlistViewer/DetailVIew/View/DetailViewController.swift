@@ -17,7 +17,7 @@ final class DetailViewController: UIViewController {
 		self.output = output
 		self.viewModels = field.sorted(by: model.scheme).compactMap { id, value in
 			guard let config = model.scheme.config(for: id) else { return nil }
-			return DetailValueView.ViewModel(id: id, config: config, title: config.title, value: value)
+			return DetailValueView.ViewModel(id: id, title: config.title, value: value)
 		}
 		super.init(nibName: nil, bundle: nil)
 		self.title = title
@@ -37,33 +37,31 @@ final class DetailViewController: UIViewController {
     }
 
 	@objc private func saveButtonTapped(_ saveButton: UIBarButtonItem) {
-		do {
-			let viewModels = detailView.valueViews.map { $0.viewModel }
-			let modifiedField = viewModels.constructField()
-			let wrongIds = try output.validate(field: modifiedField)
-			guard wrongIds.isEmpty else {
-				return detailView.valueViews.forEach {
-					$0.viewModel.mode = wrongIds.contains($0.viewModel.id) ? .wrong : .normal
-				}
-			}
-			// Continue saving...
-		} catch {
-			let alertViewController = UIAlertController(title: "Error ocurred", message: error.localizedDescription, preferredStyle: .alert)
-			let retryAction = UIAlertAction(title: "OK", style: .cancel)
-			alertViewController.addAction(retryAction)
-			present(alertViewController, animated: true)
-		}
+		let viewModels = detailView.valueViews.map { $0.viewModel }
+		output.validateAndSaveIfValid(modifiedField: viewModels.field)
 	}
 
 }
 
 extension DetailViewController: DetailPresenterOutput {
-	
+
+	func markInvalidValues(with identifiers: Set<Model.Identifier>) {
+		if !identifiers.isEmpty {
+			detailView.valueViews.forEach {
+				$0.viewModel.mode = identifiers.contains($0.viewModel.id) ? .wrong : .normal
+			}
+		}
+	}
+
+	func show(error: Error) {
+		let alertViewController = UIAlertController(title: "Error ocurred", message: error.localizedDescription, preferredStyle: .alert)
+		let okAction = UIAlertAction(title: "OK", style: .cancel)
+		alertViewController.addAction(okAction)
+		present(alertViewController, animated: true)
+	}
+
 }
 
 protocol DetailViewControllerOutput: AnyObject {
-
-	func validate(field: Model.Field) throws -> Set<Model.Identifier>
-
-
+	func validateAndSaveIfValid(modifiedField: Model.Field)
 }

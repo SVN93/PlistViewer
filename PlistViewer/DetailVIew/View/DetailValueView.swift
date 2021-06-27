@@ -93,9 +93,8 @@ extension DetailValueView {
 		case normal, wrong
 	}
 
-	struct ViewModel: Equatable {
+	struct ViewModel: Hashable {
 		let id: Model.Identifier
-		let config: Model.FieldConfiguration
 		let title: String
 		var value: String
 		var mode: Mode = .normal
@@ -105,7 +104,7 @@ extension DetailValueView {
 
 extension Sequence where Element == DetailValueView.ViewModel {
 
-	func constructField() -> Model.Field {
+	var field: Model.Field {
 		reduce(into: Model.Field()) { field, nextElement in
 			field[nextElement.id] = nextElement.value
 		}

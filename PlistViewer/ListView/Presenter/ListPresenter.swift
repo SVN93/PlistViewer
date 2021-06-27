@@ -12,34 +12,27 @@ final class ListPresenter: ListFlow {
 	typealias ModelProvider = (() throws -> Model)
 	private let modelProvider: ModelProvider
 	private var model: Result<Model, Error>?
-	var saveModel: ((_ newModel: Model) throws -> Void)?
-	var showDetail: ((_ field: Model.Field, _ model: Model) -> Void)?
+	var saveModel: SaveModel?
+	var showDetail: ShowDetail?
 	weak var output: ListPresenterOutput?
 
 	init(_ modelProvider: @escaping ModelProvider) {
 		self.modelProvider = modelProvider
 	}
 
-	func update(field: Model.Field, for model: Model) {
+	func update(field: Model.Field, at index: Int, for model: Model) {
 		self.model = .success(model)
-		do {
-			guard let rowToUpdate = model.data.firstIndex(of: field) else {
-				throw ListPresenterError.internalInconsistency
-			}
-			self.model = .success(model)
-			output?.update(model: model, updateRow: rowToUpdate)
-		} catch {
-			self.model = .failure(error)
-			output?.show(error: error)
-		}
+		output?.update(model: model, updateRow: index)
 	}
 
 }
 
 protocol ListFlow: AnyObject {
-	var saveModel: ((_ newModel: Model) throws -> Void)? { get set }
-	var showDetail: ((_ field: Model.Field, _ model: Model) -> Void)? { get set }
-	func update(field: Model.Field, for model: Model)
+	typealias SaveModel = ((_ newModel: Model) throws -> Void)
+	typealias ShowDetail = ((_ field: Model.Field, _ atIndex: Int, _ inModel: Model) -> Void)
+	var saveModel: SaveModel? { get set }
+	var showDetail: ShowDetail? { get set }
+	func update(field: Model.Field, at index: Int, for model: Model)
 }
 
 extension ListPresenter: ListViewControllerOutput {
@@ -61,7 +54,7 @@ extension ListPresenter: ListViewControllerOutput {
 				case .success(var model) = model,
 				model.data.indices.contains(row)
 			else {
-				throw ListPresenterError.internalInconsistency
+				throw ListPresenterError.internalInconsistency // Never called actually.
 			}
 
 			model.data.remove(at: row)
@@ -74,9 +67,9 @@ extension ListPresenter: ListViewControllerOutput {
 		}
 	}
 
-	func showDetail(for field: Model.Field) {
+	func showDetail(for field: Model.Field, with index: Int) {
 		model?.mapIfSuccess { model in
-			showDetail?(field, model)
+			showDetail?(field, index, model)
 		}
 	}
 

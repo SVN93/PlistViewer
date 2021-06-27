@@ -7,36 +7,57 @@
 
 final class DetailPresenter: DetailFlow {
 
-	private var field: Model.Field
 	private var model: Model
-	var saveModel: ((_ field: Model.Field, _ newModel: Model) throws -> Void)?
+	private let fieldIdx: Int
+	var saveModel: SaveModel?
 	weak var output: DetailPresenterOutput?
 
-	init(field: Model.Field, model: Model) {
-		self.field = field
+	init(fieldIdx: Int, model: Model) {
 		self.model = model
+		self.fieldIdx = fieldIdx
 	}
 
 }
 
 protocol DetailFlow: AnyObject {
-	var saveModel: ((_ field: Model.Field, _ newModel: Model) throws -> Void)? { get set }
+	typealias SaveModel = ((_ field: Model.Field, _ newModel: Model) throws -> Void)
+	var saveModel: SaveModel? { get set }
 }
 
 extension DetailPresenter: DetailViewControllerOutput {
 
-	func validate(field: Model.Field) throws -> Set<Model.Identifier> {
-		var wrongIds: Set<Model.Identifier> = []
-		try field.forEach { id, value in
-			guard let config = model.scheme.config(for: id) else { return }
-			let isValid = try value.validate(with: config.type)
-			if !isValid { wrongIds.insert(id) }
+	private func save(_ field: Model.Field) throws {
+		var modifiedModel = model
+		modifiedModel.data[fieldIdx] = field
+		try saveModel?(field, modifiedModel)
+		self.model = modifiedModel
+	}
+
+	func validateAndSaveIfValid(modifiedField: Model.Field) {
+		do {
+			let validationErrors = try modifiedField.validateAllValues(by: model.scheme)
+			if validationErrors.isEmpty {
+				try save(modifiedField)
+			} else {
+				var wrongIds: Set<Model.Identifier> = []
+				validationErrors.forEach { wrongIds.insert($0.identifier) }
+				output?.markInvalidValues(with: wrongIds)
+			}
+		} catch {
+			output?.show(error: error)
 		}
+	}
+
+	func validate(field: Model.Field) throws -> Set<Model.Identifier> {
+		let validationErrors = try field.validateAllValues(by: model.scheme)
+		var wrongIds: Set<Model.Identifier> = []
+		validationErrors.forEach { wrongIds.insert($0.identifier) }
 		return wrongIds
 	}
 
 }
 
 protocol DetailPresenterOutput: AnyObject {
-
+	func show(error: Error)
+	func markInvalidValues(with identifiers: Set<Model.Identifier>)
 }

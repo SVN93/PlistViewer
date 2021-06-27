@@ -69,7 +69,7 @@ final class ListViewController: UITableViewController {
 		lastSelectedIndexPath = indexPath
 		guard case .success(let model) = viewModel else { return }
 		let field = model.data[indexPath.row]
-		output.showDetail(for: field)
+		output.showDetail(for: field, with: indexPath.row)
 	}
 
 }
@@ -107,5 +107,5 @@ extension ListViewController: ListPresenterOutput {
 protocol ListViewControllerOutput: AnyObject {
 	func requestViewModel()
 	func delete(field: Model.Field, at row: Int)
-	func showDetail(for field: Model.Field)
+	func showDetail(for field: Model.Field, with index: Int)
 }

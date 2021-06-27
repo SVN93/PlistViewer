@@ -44,9 +44,21 @@ struct Model: Hashable {
 
 }
 
+extension Sequence where Element == Model.FieldConfiguration {
+
+	func config(for identifier: Model.Identifier) -> Element? {
+		lazy.first(where: { $0.identifier == identifier })
+	}
+
+	func title(for identifier: Model.Identifier) -> String? {
+		config(for: identifier)?.title
+	}
+
+}
+
 extension String {
 
-	func validate(with type: Model.ValueType) throws -> Bool {
+	func isValid(byIts type: Model.ValueType) throws -> Bool {
 		switch type {
 		case .string:
 			return true
@@ -63,33 +75,54 @@ extension String {
 	}
 }
 
-extension Model {
+extension Model.Field {
 
-	enum ValidationError: Swift.Error {
-		case valueShouldntBeEmpty(Identifier)
-		case wrongType(Identifier)
-	}
+	enum ValidationError: Swift.Error, Hashable {
+		case valueShouldntBeEmpty(Model.Identifier)
+		case wrongType(Model.Identifier)
 
-	func validateByScheme() throws {
-		for field in data {
-			for (id, value) in field {
-				guard let config = scheme.config(for: id) else { continue } // Identifier cannot be mapped wrong.
-				if config.isRequired {
-					guard !value.isEmpty else {
-						throw ValidationError.valueShouldntBeEmpty(id)
-					}
-				}
-
-				guard try value.validate(with: config.type) else {
-					throw ValidationError.wrongType(id)
-				}
+		var identifier: Model.Identifier {
+			switch self {
+			case .valueShouldntBeEmpty(let id):
+				return id
+			case .wrongType(let id):
+				return id
 			}
 		}
 	}
 
-}
+	func validate(by scheme: Model.Scheme) throws {
+		for (id, value) in self {
+			guard let config = scheme.config(for: id) else { continue } // Identifier cannot be mapped wrong.
+			if config.isRequired {
+				guard !value.isEmpty else {
+					throw ValidationError.valueShouldntBeEmpty(id)
+				}
+			}
 
-extension Model.Field {
+			guard try value.isValid(byIts: config.type) else {
+				throw ValidationError.wrongType(id)
+			}
+		}
+	}
+
+	func validateAllValues(by scheme: Model.Scheme) throws -> Set<ValidationError> {
+		var wrongIds: Set<ValidationError> = []
+		for (id, value) in self {
+			guard let config = scheme.config(for: id) else { continue } // Identifier cannot be mapped wrong.
+			if config.isRequired {
+				if value.isEmpty {
+					wrongIds.insert(ValidationError.valueShouldntBeEmpty(id))
+				}
+			}
+
+			let isValid = try value.isValid(byIts: config.type)
+			if !isValid {
+				wrongIds.insert(ValidationError.wrongType(id))
+			}
+		}
+		return wrongIds
+	}
 
 	func sorted(by scheme: Model.Scheme) -> [(Model.Identifier, String)] {
 		let schemeIds = scheme.map { $0.identifier }
@@ -98,31 +131,12 @@ extension Model.Field {
 
 }
 
-extension Optional: Comparable where Wrapped == Array<Model.Identifier>.Index {
+extension Model {
 
-	public static func < (lhs: Optional<Wrapped>, rhs: Optional<Wrapped>) -> Bool {
-		switch (lhs, rhs) {
-		case let (.some(lhsValue), .some(rhsValue)):
-			return lhsValue < rhsValue
-		case (.some, .none): // Order values before nils
-			return false
-		case (.none, .some):
-			return true
-		case (.none, .none): // All none are equivalent, so none is before any other
-			return false
+	func validateByScheme() throws {
+		for field in data {
+			try field.validate(by: scheme)
 		}
-	}
-
-}
-
-extension Array where Element == Model.FieldConfiguration {
-
-	func config(for identifier: Model.Identifier) -> Element? {
-		lazy.first(where: { $0.identifier == identifier })
-	}
-
-	func title(for identifier: Model.Identifier) -> String? {
-		config(for: identifier)?.title
 	}
 
 }

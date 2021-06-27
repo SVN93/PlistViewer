@@ -9,11 +9,7 @@ import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
-	private let flowCoordinator = FlowCoordinator(
-		listViewBuilder: ListViewBuilder(),
-		detailViewBuilder: DetailViewBuilder(),
-		navigationControllerBuilder: UINavigationController.init(rootViewController:)
-	)
+	private let flowCoordinator = FlowCoordinator()
 	var window: UIWindow?
 
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {

@@ -16,15 +16,16 @@ final class FlowCoordinator {
 	private var listFlow: ListFlow?
 	private let listViewBuilder: ListViewBuilderProtocol
 	private let detailViewBuilder: DetailViewBuilderProtocol
-	private let navigationControllerBuilder: (_ rootViewController: UIViewController) -> UINavigationController
+	typealias NavigationControllerBuilder = (_ rootViewController: UIViewController) -> UINavigationController
+	private let navigationControllerBuilder: NavigationControllerBuilder
 	private weak var navigationController: UINavigationController?
 
 	init(
 		fileName: String = "Input",
 		plistService: PlistService = PlistReaderService(bundlePlistName: "Input"),
-		listViewBuilder: ListViewBuilderProtocol,
-		detailViewBuilder: DetailViewBuilderProtocol,
-		navigationControllerBuilder: @escaping (_ conntroller: UIViewController) -> UINavigationController
+		listViewBuilder: ListViewBuilderProtocol = ListViewBuilder(),
+		detailViewBuilder: DetailViewBuilderProtocol = DetailViewBuilder(),
+		navigationControllerBuilder: @escaping NavigationControllerBuilder = UINavigationController.init(rootViewController:)
 	) {
 		self.fileName = fileName
 		self.plistService = plistService
@@ -33,12 +34,13 @@ final class FlowCoordinator {
 		self.navigationControllerBuilder = navigationControllerBuilder
 	}
 
-	private func startDetailFlow(for field: Model.Field, in model: Model) {
-		let (detailFlow, detailView) = self.detailViewBuilder.buildStack(field: field, model: model)
+	private func startDetailFlow(for field: Model.Field, with index: Int, in model: Model) {
+		let (detailFlow, detailView) = self.detailViewBuilder.buildStack(field: field, with: index, in: model)
 		detailFlow.saveModel = { [unowned self] field, model in
 			try self.plistService.write(value: model, to: self.fileName)
 			self.model = model
-			self.listFlow?.update(field: field, for: model)
+			self.listFlow?.update(field: field, at: index, for: model)
+			self.navigationController?.popViewController(animated: true)
 		}
 		self.navigationController?.pushViewController(detailView, animated: true)
 	}
@@ -54,7 +56,7 @@ final class FlowCoordinator {
 		listFlow.saveModel = { [unowned self] modelToSave in
 			try self.plistService.write(value: modelToSave, to: self.fileName)
 		}
-		listFlow.showDetail = startDetailFlow(for:in:)
+		listFlow.showDetail = startDetailFlow(for:with:in:)
 		let navigationController = navigationControllerBuilder(listView)
 		self.navigationController = navigationController
 		return navigationController

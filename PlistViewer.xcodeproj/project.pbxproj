@@ -131,8 +131,8 @@
 			isa = PBXGroup;
 			children = (
 				84AFE4862682862600DB2C03 /* FlowCoordinator.swift */,
-				84AFE485268285B100DB2C03 /* DetailVIew */,
 				847474B4267E932700C920B1 /* ListView */,
+				84AFE485268285B100DB2C03 /* DetailVIew */,
 				847474B1267E92DF00C920B1 /* Model */,
 				847474B0267E929D00C920B1 /* App */,
 				846B0CDC2683649E006FB3A3 /* Globals.swift */,

@@ -7,6 +7,23 @@
 
 import UIKit
 
+extension Optional: Comparable where Wrapped == Array<Model.Identifier>.Index {
+
+	public static func < (lhs: Optional<Wrapped>, rhs: Optional<Wrapped>) -> Bool {
+		switch (lhs, rhs) {
+		case let (.some(lhsValue), .some(rhsValue)):
+			return lhsValue < rhsValue
+		case (.some, .none): // Order values before nils
+			return false
+		case (.none, .some):
+			return true
+		case (.none, .none): // All none are equivalent, so none is before any other
+			return false
+		}
+	}
+
+}
+
 extension Sequence where Element: UIView {
 
 	func setTranslatesAutoresizingMaskIntoConstraints(_ value: Bool = false) {

@@ -9,20 +9,13 @@ import UIKit.UIViewController
 
 final class DetailViewBuilder: DetailViewBuilderProtocol {
 
-	private var field: Model.Field?
-	private var model: Model?
+	init() {}
 
 	func buildStack(
-		field: Model.Field, model: Model
+		field: Model.Field, with index: Int, in model: Model
 	) -> (detailFlow: DetailFlow, detailView: UIViewController) {
-		self.field = field
-		self.model = model
-		let presenter = DetailPresenter(field: field, model: model)
-		let detailViewController = DetailViewController(
-			output: presenter,
-			field: field,
-			model: model
-		)
+		let presenter = DetailPresenter(fieldIdx: index, model: model)
+		let detailViewController = DetailViewController(output: presenter, field: field, model: model)
 		presenter.output = detailViewController
 		return (presenter, detailViewController)
 	}
@@ -31,6 +24,6 @@ final class DetailViewBuilder: DetailViewBuilderProtocol {
 
 protocol DetailViewBuilderProtocol {
 	func buildStack(
-		field: Model.Field, model: Model
+		field: Model.Field, with index: Int, in model: Model
 	) -> (detailFlow: DetailFlow, detailView: UIViewController)
 }
