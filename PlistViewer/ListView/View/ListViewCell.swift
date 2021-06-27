@@ -9,7 +9,9 @@ import UIKit
 
 final class ListViewCell: UITableViewCell {
 
-	private var titledValueViews = [TitledValueView(), TitledValueView(), TitledValueView(), TitledValueView()] // little optimization
+	private var titledValueViews: [TitledValueView] {
+		Array(stackView.arrangedSubviews.dropLast()) as! [TitledValueView]
+	}
 	private let deleteButton: UIButton = {
 		let deleteButton = UIButton(type: .custom)
 		deleteButton.setTitle("Удалить", for: .normal)
@@ -40,6 +42,7 @@ final class ListViewCell: UITableViewCell {
 	}
 
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+		let titledValueViews = [TitledValueView(), TitledValueView(), TitledValueView(), TitledValueView()] // little optimization
 		let stackView = UIStackView(arrangedSubviews: titledValueViews + [deleteButton])
 		stackView.axis = .vertical
 		self.stackView = stackView
@@ -59,7 +62,6 @@ final class ListViewCell: UITableViewCell {
 		if missing > 0 {
 			for idx in 0..<missing {
 				let titledValueView = TitledValueView()
-				titledValueViews.append(titledValueView)
 				let stackIndex = viewsCount + idx
 				stackView.insertArrangedSubview(titledValueView, at: stackIndex)
 			}

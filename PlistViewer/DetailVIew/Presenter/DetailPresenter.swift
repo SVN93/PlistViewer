@@ -48,13 +48,6 @@ extension DetailPresenter: DetailViewControllerOutput {
 		}
 	}
 
-	func validate(field: Model.Field) throws -> Set<Model.Identifier> {
-		let validationErrors = try field.validateAllValues(by: model.scheme)
-		var wrongIds: Set<Model.Identifier> = []
-		validationErrors.forEach { wrongIds.insert($0.identifier) }
-		return wrongIds
-	}
-
 }
 
 protocol DetailPresenterOutput: AnyObject {
