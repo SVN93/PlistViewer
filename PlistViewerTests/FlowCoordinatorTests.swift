@@ -74,17 +74,24 @@ final class FlowCoordinatorTests: XCTestCase {
 	func testModelProvider() {
 		// Arrange
 		start()
+		let expectation = self.expectation(description: "modelProvider")
 
-		do {
-			// Act
-			let model = try listViewBuilderStub.modelProvider?()
+		// Act
+		listViewBuilderStub.modelProvider? { [unowned self] result in
+			expectation.fulfill()
 
 			// Assert
-			XCTAssertEqual(model, .mock)
-			XCTAssertEqual(plistServiceSpy.readFileName, fileName)
-		} catch {
-			// Assert
-			XCTFail(error.localizedDescription)
+			switch result {
+			case .success(let model):
+				XCTAssertEqual(model, self.modelMock)
+				XCTAssertEqual(self.plistServiceSpy.readFileName, self.fileName)
+			case .failure(let error):
+				XCTFail(error.localizedDescription)
+			}
+		}
+
+		waitForExpectations(timeout: 0.1) { error in
+			error.map { XCTFail($0.localizedDescription) }
 		}
 	}
 

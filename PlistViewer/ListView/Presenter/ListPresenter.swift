@@ -9,7 +9,8 @@ import PlistService
 
 final class ListPresenter: ListFlow {
 
-	typealias ModelProvider = (() throws -> Model)
+	typealias CompletionHandler = (_ result: Result<Model, Error>) -> Void
+	typealias ModelProvider = ((_ completion: @escaping CompletionHandler) -> Void)
 	private let modelProvider: ModelProvider
 	private var model: Result<Model, Error>?
 	var saveModel: SaveModel?
@@ -38,13 +39,15 @@ protocol ListFlow: AnyObject {
 extension ListPresenter: ListViewControllerOutput {
 
 	func requestViewModel() {
-		do {
-			let model = try modelProvider()
-			self.model = .success(model)
-			output?.update(model: model, deletedRow: nil)
-		} catch {
-			self.model = .failure(error)
-			output?.show(error: error)
+		modelProvider { [unowned self] result in
+			switch result {
+			case .success(let model):
+				self.model = .success(model)
+				self.output?.update(model: model, deletedRow: nil)
+			case .failure(let error):
+				self.model = .failure(error)
+				self.output?.show(error: error)
+			}
 		}
 	}
 

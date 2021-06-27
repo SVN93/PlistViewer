@@ -46,12 +46,23 @@ final class FlowCoordinator {
 	}
 
 	func start() -> UIViewController {
-		let (listFlow, listView) = listViewBuilder.buildStack(modelProvider: { [unowned self] in
-			let model: Model = try self.plistService.readValue(from: self.fileName)
-			try model.validateByScheme()
-			self.model = model
-			return model
-		})
+		let (listFlow, listView) = listViewBuilder.buildStack { comletion in
+			DispatchQueue.global(qos: .userInitiated).async { [unowned self] in
+				do {
+					let model: Model = try self.plistService.readValue(from: self.fileName)
+					try model.validateByScheme()
+//					print(Thread.isMainThread)
+					DispatchQueue.main.async { [unowned self] in
+						self.model = model
+						comletion(.success(model))
+					}
+				} catch {
+					DispatchQueue.main.async {
+						comletion(.failure(error))
+					}
+				}
+			}
+		}
 		self.listFlow = listFlow
 		listFlow.saveModel = { [unowned self] modelToSave in
 			try self.plistService.write(value: modelToSave, to: self.fileName)
