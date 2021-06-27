@@ -45,7 +45,7 @@ final class FlowCoordinator {
 		self.navigationController?.pushViewController(detailView, animated: true)
 	}
 
-	func start() -> UINavigationController {
+	func start() -> UIViewController {
 		let (listFlow, listView) = listViewBuilder.buildStack(modelProvider: { [unowned self] in
 			let model: Model = try self.plistService.readValue(from: self.fileName)
 			try model.validateByScheme()

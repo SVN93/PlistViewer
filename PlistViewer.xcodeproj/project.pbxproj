@@ -13,7 +13,6 @@
 		8474743E267E8CD100C920B1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8474743D267E8CD100C920B1 /* SceneDelegate.swift */; };
 		84747442267E8CD200C920B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84747441267E8CD200C920B1 /* Assets.xcassets */; };
 		84747448267E8CD200C920B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84747446267E8CD200C920B1 /* LaunchScreen.storyboard */; };
-		84747453267E8CD200C920B1 /* PlistViewerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84747452267E8CD200C920B1 /* PlistViewerTests.swift */; };
 		8474745E267E8CD200C920B1 /* PlistViewerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8474745D267E8CD200C920B1 /* PlistViewerUITests.swift */; };
 		847474B3267E930200C920B1 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847474B2267E930200C920B1 /* Model.swift */; };
 		847474B6267E934300C920B1 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847474B5267E934300C920B1 /* ListViewController.swift */; };
@@ -22,6 +21,13 @@
 		847474C0267E987500C920B1 /* Input.plist in Resources */ = {isa = PBXBuildFile; fileRef = 847474BF267E987500C920B1 /* Input.plist */; };
 		847474C3267E9B1B00C920B1 /* PlistService in Frameworks */ = {isa = PBXBuildFile; productRef = 847474C2267E9B1B00C920B1 /* PlistService */; };
 		848182632682A01900DAE395 /* DetailValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848182622682A01900DAE395 /* DetailValueView.swift */; };
+		84A578BA2688F0CB00CFE770 /* FlowCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A578B92688F0CB00CFE770 /* FlowCoordinatorTests.swift */; };
+		84A578BC2688F2EE00CFE770 /* PlistServiceSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A578BB2688F2EE00CFE770 /* PlistServiceSpy.swift */; };
+		84A578BE2688F3B100CFE770 /* Model.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A578BD2688F3B100CFE770 /* Model.Mock.swift */; };
+		84A578C02688FD7600CFE770 /* ListViewBuilderStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A578BF2688FD7600CFE770 /* ListViewBuilderStub.swift */; };
+		84A578C22688FE4A00CFE770 /* DetailViewBuilderStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A578C12688FE4A00CFE770 /* DetailViewBuilderStub.swift */; };
+		84A578C4268900B400CFE770 /* ListFlowSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A578C3268900B400CFE770 /* ListFlowSpy.swift */; };
+		84A578C6268900CC00CFE770 /* DetailFlowSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A578C5268900CC00CFE770 /* DetailFlowSpy.swift */; };
 		84AFE4802682536000DB2C03 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFE47F2682536000DB2C03 /* ListViewCell.swift */; };
 		84AFE482268254A300DB2C03 /* ListViewCell.ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFE481268254A300DB2C03 /* ListViewCell.ViewModel.swift */; };
 		84AFE4842682577700DB2C03 /* TitledValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFE4832682577700DB2C03 /* TitledValueView.swift */; };
@@ -58,7 +64,6 @@
 		84747447267E8CD200C920B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84747449267E8CD200C920B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8474744E267E8CD200C920B1 /* PlistViewerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlistViewerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		84747452267E8CD200C920B1 /* PlistViewerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlistViewerTests.swift; sourceTree = "<group>"; };
 		84747454267E8CD200C920B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84747459267E8CD200C920B1 /* PlistViewerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlistViewerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8474745D267E8CD200C920B1 /* PlistViewerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlistViewerUITests.swift; sourceTree = "<group>"; };
@@ -70,6 +75,13 @@
 		847474BD267E97DC00C920B1 /* ListViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewBuilder.swift; sourceTree = "<group>"; };
 		847474BF267E987500C920B1 /* Input.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Input.plist; sourceTree = "<group>"; };
 		848182622682A01900DAE395 /* DetailValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailValueView.swift; sourceTree = "<group>"; };
+		84A578B92688F0CB00CFE770 /* FlowCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinatorTests.swift; sourceTree = "<group>"; };
+		84A578BB2688F2EE00CFE770 /* PlistServiceSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlistServiceSpy.swift; sourceTree = "<group>"; };
+		84A578BD2688F3B100CFE770 /* Model.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.Mock.swift; sourceTree = "<group>"; };
+		84A578BF2688FD7600CFE770 /* ListViewBuilderStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewBuilderStub.swift; sourceTree = "<group>"; };
+		84A578C12688FE4A00CFE770 /* DetailViewBuilderStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewBuilderStub.swift; sourceTree = "<group>"; };
+		84A578C3268900B400CFE770 /* ListFlowSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListFlowSpy.swift; sourceTree = "<group>"; };
+		84A578C5268900CC00CFE770 /* DetailFlowSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailFlowSpy.swift; sourceTree = "<group>"; };
 		84AFE47F2682536000DB2C03 /* ListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
 		84AFE481268254A300DB2C03 /* ListViewCell.ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewCell.ViewModel.swift; sourceTree = "<group>"; };
 		84AFE4832682577700DB2C03 /* TitledValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitledValueView.swift; sourceTree = "<group>"; };
@@ -147,8 +159,14 @@
 		84747451267E8CD200C920B1 /* PlistViewerTests */ = {
 			isa = PBXGroup;
 			children = (
-				84747452267E8CD200C920B1 /* PlistViewerTests.swift */,
 				84747454267E8CD200C920B1 /* Info.plist */,
+				84A578BD2688F3B100CFE770 /* Model.Mock.swift */,
+				84A578BB2688F2EE00CFE770 /* PlistServiceSpy.swift */,
+				84A578C3268900B400CFE770 /* ListFlowSpy.swift */,
+				84A578BF2688FD7600CFE770 /* ListViewBuilderStub.swift */,
+				84A578C5268900CC00CFE770 /* DetailFlowSpy.swift */,
+				84A578C12688FE4A00CFE770 /* DetailViewBuilderStub.swift */,
+				84A578B92688F0CB00CFE770 /* FlowCoordinatorTests.swift */,
 			);
 			path = PlistViewerTests;
 			sourceTree = "<group>";
@@ -415,7 +433,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84747453267E8CD200C920B1 /* PlistViewerTests.swift in Sources */,
+				84A578C02688FD7600CFE770 /* ListViewBuilderStub.swift in Sources */,
+				84A578BA2688F0CB00CFE770 /* FlowCoordinatorTests.swift in Sources */,
+				84A578C4268900B400CFE770 /* ListFlowSpy.swift in Sources */,
+				84A578BE2688F3B100CFE770 /* Model.Mock.swift in Sources */,
+				84A578BC2688F2EE00CFE770 /* PlistServiceSpy.swift in Sources */,
+				84A578C6268900CC00CFE770 /* DetailFlowSpy.swift in Sources */,
+				84A578C22688FE4A00CFE770 /* DetailViewBuilderStub.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
