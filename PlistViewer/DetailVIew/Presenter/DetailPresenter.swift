@@ -24,7 +24,17 @@ protocol DetailFlow: AnyObject {
 }
 
 extension DetailPresenter: DetailViewControllerOutput {
-	
+
+	func validate(field: Model.Field) throws -> Set<Model.Identifier> {
+		var wrongIds: Set<Model.Identifier> = []
+		try field.forEach { id, value in
+			guard let config = model.scheme.config(for: id) else { return }
+			let isValid = try value.validate(with: config.type)
+			if !isValid { wrongIds.insert(id) }
+		}
+		return wrongIds
+	}
+
 }
 
 protocol DetailPresenterOutput: AnyObject {

@@ -10,16 +10,11 @@ import UIKit
 final class DetailViewController: UIViewController {
 
 	private let output: DetailViewControllerOutput
-	private var detailView: DetailView { view as! DetailView }
-	private var field: Model.Field
-	private var model: Model
 	private var viewModels: [DetailValueView.ViewModel]
-	private var valueViews: [DetailValueView] = []
+	private var detailView: DetailView { view as! DetailView }
 
 	init(output: DetailViewControllerOutput, field: Model.Field, model: Model, title: String = "Detail") {
 		self.output = output
-		self.field = field
-		self.model = model
 		self.viewModels = field.sorted(by: model.scheme).compactMap { id, value in
 			guard let config = model.scheme.config(for: id) else { return nil }
 			return DetailValueView.ViewModel(id: id, config: config, title: config.title, value: value)
@@ -33,24 +28,25 @@ final class DetailViewController: UIViewController {
 	}
 
 	override func loadView() {
-		view = DetailView()
+		view = DetailView(viewModels: viewModels)
 	}
 
     override func viewDidLoad() {
         super.viewDidLoad()
 		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButtonTapped(_:)))
-		valueViews = viewModels.lazy.map(DetailValueView.init(viewModel:))
-		valueViews.forEach(detailView.stackView.addArrangedSubview(_:))
     }
 
 	@objc private func saveButtonTapped(_ saveButton: UIBarButtonItem) {
 		do {
-			try valueViews.forEach { valueView in
-				var viewModel = valueView.viewModel
-				let isValid = try viewModel.value.validate(with: viewModel.config.type)
-				viewModel.mode = isValid ? .normal : .wrong
-				valueView.viewModel = viewModel
+			let viewModels = detailView.valueViews.map { $0.viewModel }
+			let modifiedField = viewModels.constructField()
+			let wrongIds = try output.validate(field: modifiedField)
+			guard wrongIds.isEmpty else {
+				return detailView.valueViews.forEach {
+					$0.viewModel.mode = wrongIds.contains($0.viewModel.id) ? .wrong : .normal
+				}
 			}
+			// Continue saving...
 		} catch {
 			let alertViewController = UIAlertController(title: "Error ocurred", message: error.localizedDescription, preferredStyle: .alert)
 			let retryAction = UIAlertAction(title: "OK", style: .cancel)
@@ -66,5 +62,8 @@ extension DetailViewController: DetailPresenterOutput {
 }
 
 protocol DetailViewControllerOutput: AnyObject {
-	
+
+	func validate(field: Model.Field) throws -> Set<Model.Identifier>
+
+
 }

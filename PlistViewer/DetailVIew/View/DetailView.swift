@@ -9,14 +9,18 @@ import UIKit
 
 final class DetailView: UIScrollView {
 
-	let stackView: UIStackView = {
+	private let stackView: UIStackView = {
 		let stackView = UIStackView()
 		stackView.axis = .vertical
 		return stackView
 	}()
+	var valueViews: [DetailValueView] {
+		stackView.arrangedSubviews as! [DetailValueView]
+	}
 
-	override init(frame: CGRect) {
-		super.init(frame: frame)
+	init(viewModels: [DetailValueView.ViewModel]) {
+		super.init(frame: .zero)
+		viewModels.lazy.map(DetailValueView.init(viewModel:)).forEach(stackView.addArrangedSubview(_:))
 		backgroundColor = .white
 		addSubview(stackView)
 		setupLayout()

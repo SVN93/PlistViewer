@@ -35,7 +35,7 @@ final class FlowCoordinator {
 
 	private func startDetailFlow(for field: Model.Field, in model: Model) {
 		let (detailFlow, detailView) = self.detailViewBuilder.buildStack(field: field, model: model)
-		detailFlow.validateAndSaveModel = { [unowned self] field, model in
+		detailFlow.saveModel = { [unowned self] field, model in
 			try self.plistService.write(value: model, to: self.fileName)
 			self.model = model
 			self.listFlow?.update(field: field, for: model)

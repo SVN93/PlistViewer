@@ -102,3 +102,13 @@ extension DetailValueView {
 	}
 
 }
+
+extension Sequence where Element == DetailValueView.ViewModel {
+
+	func constructField() -> Model.Field {
+		reduce(into: Model.Field()) { field, nextElement in
+			field[nextElement.id] = nextElement.value
+		}
+	}
+
+}
