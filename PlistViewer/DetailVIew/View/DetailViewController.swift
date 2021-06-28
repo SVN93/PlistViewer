@@ -56,8 +56,7 @@ final class DetailViewController: UIViewController {
 			detailView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
 		}
 
-		let activeField = detailView.valueViews.first(where: { $0.isFirstResponder })
-		if let activeField = activeField {
+		if let activeField = detailView.valueViews.first(where: { $0.isFirstResponder }) {
 			detailView.scrollIndicatorInsets = activeField.textView.contentInset
 
 			let selectedRange = activeField.textView.selectedRange
