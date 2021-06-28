@@ -34,8 +34,7 @@ final class ListViewController: UITableViewController {
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		guard let indexPath = lastSelectedIndexPath else { return }
-		tableView.deselectRow(at: indexPath, animated: animated)
+		lastSelectedIndexPath.map { tableView.deselectRow(at: $0, animated: animated) }
 	}
 
     // MARK: - Table view data source
@@ -87,6 +86,10 @@ extension ListViewController: ListPresenterOutput {
 	}
 
 	func update(model: Model, updateRow: Int) {
+		guard
+			case .success(let oldModel) = viewModel,
+			oldModel != model
+		else { return }
 		viewModel = .success(model)
 		tableView.reloadRows(at: [.init(row: updateRow, section: 0)], with: .automatic)
 	}

@@ -23,7 +23,7 @@ final class DetailValueView: UIView {
 		label.numberOfLines = 0
 		return label
 	}()
-	private let textView: UITextView = {
+	let textView: UITextView = {
 		let textView = UITextView()
 		textView.isScrollEnabled = false
 		textView.isEditable = true

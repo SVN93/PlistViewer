@@ -21,6 +21,9 @@ final class DetailViewController: UIViewController {
 		}
 		super.init(nibName: nil, bundle: nil)
 		self.title = title
+		let notificationCenter = NotificationCenter.default
+		notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+		notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
 	}
 
 	required init?(coder: NSCoder) {
@@ -39,6 +42,27 @@ final class DetailViewController: UIViewController {
 	@objc private func saveButtonTapped(_ saveButton: UIBarButtonItem) {
 		let viewModels = detailView.valueViews.map { $0.viewModel }
 		output.validateAndSaveIfValid(modifiedField: viewModels.field)
+	}
+
+	@objc func adjustForKeyboard(notification: Notification) {
+		guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+
+		let keyboardScreenEndFrame = keyboardValue.cgRectValue
+		let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+
+		if notification.name == UIResponder.keyboardWillHideNotification {
+			detailView.contentInset = .zero
+		} else {
+			detailView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+		}
+
+		let activeField = detailView.valueViews.first(where: { $0.isFirstResponder })
+		if let activeField = activeField {
+			detailView.scrollIndicatorInsets = activeField.textView.contentInset
+
+			let selectedRange = activeField.textView.selectedRange
+			activeField.textView.scrollRangeToVisible(selectedRange)
+		}
 	}
 
 }

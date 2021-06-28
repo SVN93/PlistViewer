@@ -9,11 +9,6 @@ import UIKit
 
 final class TitledValueView: UIView {
 
-	struct ViewModel: Hashable {
-		let title: String?
-		let value: String?
-	}
-
 	private let titleLabel: UILabel = {
 		let label = UILabel()
 		label.font = .boldSystemFont(ofSize: 14)
@@ -59,6 +54,15 @@ final class TitledValueView: UIView {
 			titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
 			valueLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
 		])
+	}
+
+}
+
+extension TitledValueView {
+
+	struct ViewModel: Hashable {
+		let title: String?
+		let value: String?
 	}
 
 }
