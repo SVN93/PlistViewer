@@ -23,6 +23,7 @@
 		848182632682A01900DAE395 /* DetailValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848182622682A01900DAE395 /* DetailValueView.swift */; };
 		8497FCB92689C5B400EA22BB /* ListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8497FCB82689C5B400EA22BB /* ListViewControllerTests.swift */; };
 		8497FCBB2689CAFC00EA22BB /* DetailViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8497FCBA2689CAFC00EA22BB /* DetailViewControllerTests.swift */; };
+		8497FCBD2689D52900EA22BB /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8497FCBC2689D52900EA22BB /* ModelTests.swift */; };
 		84A578BA2688F0CB00CFE770 /* FlowCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A578B92688F0CB00CFE770 /* FlowCoordinatorTests.swift */; };
 		84A578BC2688F2EE00CFE770 /* PlistServiceSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A578BB2688F2EE00CFE770 /* PlistServiceSpy.swift */; };
 		84A578BE2688F3B100CFE770 /* Model.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A578BD2688F3B100CFE770 /* Model.Mock.swift */; };
@@ -81,6 +82,7 @@
 		848182622682A01900DAE395 /* DetailValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailValueView.swift; sourceTree = "<group>"; };
 		8497FCB82689C5B400EA22BB /* ListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewControllerTests.swift; sourceTree = "<group>"; };
 		8497FCBA2689CAFC00EA22BB /* DetailViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewControllerTests.swift; sourceTree = "<group>"; };
+		8497FCBC2689D52900EA22BB /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
 		84A578B92688F0CB00CFE770 /* FlowCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinatorTests.swift; sourceTree = "<group>"; };
 		84A578BB2688F2EE00CFE770 /* PlistServiceSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlistServiceSpy.swift; sourceTree = "<group>"; };
 		84A578BD2688F3B100CFE770 /* Model.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.Mock.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				84A578C9268920E100CFE770 /* DetailPresenterTests.swift */,
 				8497FCB82689C5B400EA22BB /* ListViewControllerTests.swift */,
 				8497FCBA2689CAFC00EA22BB /* DetailViewControllerTests.swift */,
+				8497FCBC2689D52900EA22BB /* ModelTests.swift */,
 			);
 			path = PlistViewerTests;
 			sourceTree = "<group>";
@@ -448,6 +451,7 @@
 				84A578CA268920E200CFE770 /* DetailPresenterTests.swift in Sources */,
 				84A578C02688FD7600CFE770 /* ListViewBuilderStub.swift in Sources */,
 				84A578BA2688F0CB00CFE770 /* FlowCoordinatorTests.swift in Sources */,
+				8497FCBD2689D52900EA22BB /* ModelTests.swift in Sources */,
 				84A578C826891B9800CFE770 /* ListPresenterTests.swift in Sources */,
 				84A578C4268900B400CFE770 /* ListFlowSpy.swift in Sources */,
 				84A578BE2688F3B100CFE770 /* Model.Mock.swift in Sources */,
